@@ -5,50 +5,81 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../nagevacion';
 import Filtros from '../components/filtros';
 import { useNavigation } from '@react-navigation/native';
-import { client } from '../assets/Api/pocketBase';
+import { client, getPosts } from '../assets/Api/pocketBase';
 
-
-
-const ACTIVECONFERENCE = [
-  { url: 'https://images.unsplash.com/photo-1477281765962-ef34e8bb0967?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1033&q=80', nombre: 'Francis B.', tema: 'Estadistica' },
-  { url: 'https://images.unsplash.com/photo-1561489396-888724a1543d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', nombre: 'Derek J.', tema: 'Ciencias Sociales'},
-  { url: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', nombre: 'Francis B.', tema: 'Sopa'}
-]
 
 
 const POPULAR = [
   { url: 'https://images.unsplash.com/photo-1582192730841-2a682d7375f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80', nombre: 'Francis B.', tema: 'Estadistica' },
-  { url: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', nombre: 'Derek J.', tema: 'Ciencias Sociales'},
-  { url: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', nombre: 'Francis B.', tema: 'Sopa'}
+  { url: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', nombre: 'Derek J.', tema: 'Ciencias Sociales' },
+  { url: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', nombre: 'Francis B.', tema: 'Sopa' }
 ]
 
 
 
 const HomeScreen = () => {
-  const conferenceScroll = ({ item, index }) => {
+
+  // Listado de Tareas post PocketBase
+
+  const navigate = useNavigation();
+
+  const [post, setPost] = useState([])
+  const [collectionId, setCollectionId] = useState([])
+  const [collectionImages, setCollectionImage] = useState([])
+  const [postId, setPostId] = useState([])
+  const [postArea, setPostArea] = useState([])
+  
+
+
+  useEffect(() => {
+    getPosts().then((res) => {
+      setPost(res)
+      console.log(res)
+
+      const collectionId = res.map(item => item.collectionId);
+      setCollectionId(collectionId)
+
+      const collectionImage = res.map(item => item.image);
+      setCollectionImage(collectionImage)
+
+      const id = res.map(item => item.id);
+      setPostId(id)
+
+
+      const areaName = res.map(item => item.area)
+      setPostArea(areaName)
+
+   
+      
+      
+    })
+
+  }, []);
+
+  
+
+  
+    
+
+  const conferenceScroll = ({ item, index } ) => {
+
+    const imageLink = `https://une-meeting.pockethost.io/api/files/${collectionId[index]}/${postId[index]}/${collectionImages[index]}`
     return (
-      <TouchableOpacity style={styles.botonConferenciasActivas}>
-        <ImageBackground source={{
-          uri: item.url
-        }} resizeMode='cover' style={styles.imagenConferenciasActivas}>
-          
-            <Heading pl={2} pb={2} color={colors.lead} size='sm'>{item.nombre}</Heading>
-            <Text pr={2} pb={2} color={colors.lead} fontSize={10}>{item.tema}</Text>
-         
-        </ImageBackground>
+      <TouchableOpacity key={item.id} style={styles.botonConferenciasActivas}>
+          <ImageBackground source={{
+            uri: imageLink
+          }} resizeMode='cover' style={styles.imagenConferenciasActivas}>
+
+            <Heading pl={2} pb={2} color={colors.lead} size='sm'>{item.user}</Heading>
+            <Text pr={2} pb={2} color={colors.lead} fontSize={10}>{item.area}</Text>
+          </ImageBackground>
       </TouchableOpacity>
     )
   }
 
-  const navigate = useNavigation();
 
 
-  // Listado de Tareas post PocketBase
-  useEffect(()=>{
-      client.collection('posts').getFullList().then(res => console.log(res))
-  }, [])
 
-  const [post, setPosts] = useState([])
 
   return (
     <View style={styles.contenedor} position={'relative'}>
@@ -58,7 +89,7 @@ const HomeScreen = () => {
           <Text fontWeight={'normal'}>2 Julio 2023</Text>
         </View>
         <View flexDirection={'row'} alignItems={'center'}>
-          <TouchableOpacity onPress={()=> navigate.navigate('settings')}>
+          <TouchableOpacity onPress={() => navigate.navigate('settings')}>
             <Ionicons name="settings" size={30} color="black" />
           </TouchableOpacity>
           <Image ml={2} source={{
@@ -71,7 +102,7 @@ const HomeScreen = () => {
         <Filtros />
       </View>
       <View mt={5}>
-        <Heading size={'md'} bold>Recomendaciones</Heading>
+        <Heading size={'md'} bold></Heading>
         <TouchableOpacity style={styles.botonRecomendaciones}>
           <ImageBackground resizeMode={'cover'} source={{
             uri: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
@@ -81,22 +112,22 @@ const HomeScreen = () => {
           </ImageBackground>
         </TouchableOpacity>
       </View>
-      <View flex={1} mt={7}> 
+      <View flex={1} mt={7}>
         <Heading bold size={'md'}>Conferencias Activas</Heading>
-        <FlatList 
-          data={ACTIVECONFERENCE}
+        <FlatList
+          data={post}
           horizontal
           renderItem={conferenceScroll}
           showsHorizontalScrollIndicator={false}
 
         />
         <Heading bold size={'md'} mt={0}>Conferencias Populares</Heading>
-        <FlatList 
+        <FlatList
           data={POPULAR}
           horizontal
           renderItem={conferenceScroll}
           showsHorizontalScrollIndicator={false}
-          
+
         />
       </View>
     </View>
@@ -135,7 +166,7 @@ const styles = StyleSheet.create({
     height: 130,
     marginTop: 5,
     marginRight: 10
-    
+
   },
 
   imagenConferenciasActivas: {
@@ -145,9 +176,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     borderRadius: 10,
     borderWidth: 4,
-  
+
   },
- 
+
 
 
 })

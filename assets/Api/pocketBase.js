@@ -4,4 +4,9 @@ export const client = new PocketBase(url)
 client.autoCancellation(false);
 
 
+export async function getPosts(){
+    return await client.collection("posts").getFullList();
+}
+
+
 

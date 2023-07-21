@@ -40,7 +40,7 @@ function Configuration() {
 
 function AddStack() {
     return(
-        <addConferenceStack.Navigator initialRouteName='BuscarConferencia' screenOptions={{ headerShown: false }} >
+        <addConferenceStack.Navigator initialRouteName='addConference' screenOptions={{ headerShown: false }} >
             <addConferenceStack.Screen  name='BuscarConferencia' component={Conference} />
 
             <addConferenceStack.Screen  name='addConference'  component={AddConference} options={{ headerShown: true }}/>
@@ -57,7 +57,7 @@ function AddStack() {
 function MyNavs() {
     return (
         <Tab.Navigator 
-            initialRouteName='Inicio'
+            initialRouteName='Buscar'
             screenOptions={{
                 tabBarActiveTintColor: colors.sky_blue,
                 tabBarStyle: {
