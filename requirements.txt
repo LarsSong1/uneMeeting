@@ -1,17 +1,19 @@
-unemeeting@1.0.0 C:\Users\jairg\Desktop\UneMeeting\unemeeting
-├── @babel/core@7.22.8
-├── @expo/vector-icons@13.0.0
-├── @expo/webpack-config@18.1.1
-├── @react-navigation/bottom-tabs@6.5.8
-├── @react-navigation/native-stack@6.9.13
-├── @react-navigation/native@6.1.7
-├── expo-status-bar@1.4.4
-├── expo@48.0.20
-├── native-base@3.4.28
-├── react-dom@18.2.0
-├── react-native-safe-area-context@4.6.4
-├── react-native-screens@3.22.1
-├── react-native-web@0.18.12
-├── react-native@0.71.8
-└── react@18.2.0
+unemeeting@1.0.0 C:\Users\jairg\Desktop\App movil\AppConferencias
+Ôö£ÔöÇÔöÇ @babel/core@7.22.8
+Ôö£ÔöÇÔöÇ @expo/vector-icons@13.0.0
+Ôö£ÔöÇÔöÇ @expo/webpack-config@18.1.1
+Ôö£ÔöÇÔöÇ @react-navigation/bottom-tabs@6.5.8
+Ôö£ÔöÇÔöÇ @react-navigation/native-stack@6.9.13
+Ôö£ÔöÇÔöÇ @react-navigation/native@6.1.7
+Ôö£ÔöÇÔöÇ expo-image-picker@14.1.1
+Ôö£ÔöÇÔöÇ expo-status-bar@1.4.4
+Ôö£ÔöÇÔöÇ expo@48.0.20
+Ôö£ÔöÇÔöÇ native-base@3.4.28
+Ôö£ÔöÇÔöÇ pocketbase@0.15.3
+Ôö£ÔöÇÔöÇ react-dom@18.2.0
+Ôö£ÔöÇÔöÇ react-native-safe-area-context@4.6.4
+Ôö£ÔöÇÔöÇ react-native-screens@3.22.1
+Ôö£ÔöÇÔöÇ react-native-web@0.18.12
+Ôö£ÔöÇÔöÇ react-native@0.71.8
+ÔööÔöÇÔöÇ react@18.2.0
 
