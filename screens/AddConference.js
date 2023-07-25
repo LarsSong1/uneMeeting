@@ -1,14 +1,45 @@
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity, Picker } from 'react-native'
 import React, { useState } from 'react'
 import { Box, Stack, View, Input, FormControl, Select, CheckIcon, Heading, Center, Image, Text, Button, Icon } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../nagevacion';
 import * as imagePicker from 'expo-image-picker'
+import { createPost } from '../assets/Api/pocketBase';
+
 
 
 const AddConference = () => {
   // const [service, setService] = useState('');
   const [imageForm, setImageForm] = useState(null)
+  const [tittle, setTittle] = useState('')
+  const [description, setDescription] = useState('')
+  const [area, setArea] = useState('')
+
+
+  const handleTittle = (e) =>{
+    setTittle(e)
+    console.log( setTittle(e))
+  }
+
+  const handleDescription = (e) => {
+    setDescription(e)
+  }
+
+
+  const handleCategoryChange = (value) => {
+    setArea(value);
+  };
+
+
+
+  const handleConferenceForm = () => {
+    if(!tittle){
+      window.alert('ingresa un titulo')
+      return;
+    }
+    createPost(tittle, description, area, imageForm)
+    window.alert('se envio con exito')
+  }
 
   // imagePicker
   let selectImage = async () => {
@@ -21,10 +52,14 @@ const AddConference = () => {
 
 
     const pickerResult = await imagePicker.launchImageLibraryAsync()
-    console.log(pickerResult)
-    
+    if (pickerResult.canceled == true) {
+      return;
+    }
 
+    setImageForm({ localUri: pickerResult.uri })
   }
+
+
 
 
 
@@ -39,11 +74,11 @@ const AddConference = () => {
           <FormControl isRequired>
             <Stack mx="4">
               <FormControl.Label>Titulo</FormControl.Label>
-              <Input type="text" defaultValue="12345" placeholder='Titulo' />
+              <Input type="text" value={tittle} placeholder='Titulo' onChangeText={handleTittle} />
               <FormControl.HelperText>
                 Deben ser al menos 5 caracteres
               </FormControl.HelperText>
-              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size='xs' color="black" />}>
+              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size={10} color="black" />}>
                 Solo se admiten 50 cacteres como máximo
               </FormControl.ErrorMessage>
             </Stack>
@@ -52,49 +87,51 @@ const AddConference = () => {
           <FormControl isRequired>
             <Stack mx="4">
               <FormControl.Label>Descripción</FormControl.Label>
-              <Input type="text" defaultValue="12345" placeholder='Descripción' />
+              <Input type="text" value={description} placeholder='Descripción' onChangeText={handleDescription} />
               <FormControl.HelperText>
                 Deben ser al menos 5 caracteres
               </FormControl.HelperText>
-              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size='xs' color="black" />}>
+              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size={10} color="black" />}>
                 Solo se admiten * cacteres como máximo
               </FormControl.ErrorMessage>
             </Stack>
           </FormControl>
           {/* area */}
-          {/* <FormControl isRequired isInvalid>
+          <FormControl isRequired isInvalid>
             <Stack mx='4'>
-              <FormControl.Label>Escoge una Categoria</FormControl.Label>
-              <Select  minWidth="200" accessibilityLabel="Choose Service" placeholder="Escoge una Categoria" _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size={5} backgroundColor={colors.lead}  />
-              }} mt="1">
-                <Select.Item  label="Economía"  value="Economía" />
-                <Select.Item label="Ofimática" value="Ofimática" />
-                <Select.Item label="Ciencias Naturales" value="Ciencias Naturales" />
-              </Select>
-              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size='xs' color="black" />}>
-                Selecciona una opcion por favor
-              </FormControl.ErrorMessage>
+              <View backgroundColor={colors.lead} mb={3} mt={3}>
+                <Text >Escoge una Categoría</Text>
+                <Picker style={styles.picker} onValueChange={handleCategoryChange} selectedValue={area}>
+                  <Picker.Item label="Economía" value="Economía" />
+                  <Picker.Item label="Ofimática" value="Ofimática" />
+                  <Picker.Item label="Ciencias Naturales" value="Ciencias Naturales" />
+                </Picker>
+          
+              </View>
             </Stack>
-
-          </FormControl> */}
+          </FormControl>
 
           {/* image */}
           <FormControl isRequired isInvalid>
             <Stack mx='4'>
-              <FormControl.Label>Escoge una imagen</FormControl.Label>
-              <Image alt='imagenPorSubir' source={{ uri: 'https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1160&q=80' }} />
-              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size='xs' color="black" />}>
+
+              <Image alt='imagenPorSubir' source={{ uri: imageForm !== null ? imageForm.localUri : 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80' }} height={150} />
+              <Button mt={3} onPress={selectImage}>
+                Escoge una imagen
+              </Button>
+
+
+              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size={10} color="black" />}>
                 Selecciona una imagen por favor
               </FormControl.ErrorMessage>
 
-              <Button leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm" />} onPress={selectImage}>
-                Subir Imagen
-              </Button>
+              
             </Stack>
 
           </FormControl>
+          <Button leftIcon={<Icon as={Ionicons} name="cloud-upload" size="sm" />} onPress={handleConferenceForm}>
+                Enviar Post
+          </Button>
         </Box>
       </Box>
     </View>
@@ -113,6 +150,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#ea9a27'
 
+  },
+  picker: {
+    backgroundColor: '#f1f1e6', 
+    marginTop: 2
   }
 })
 
