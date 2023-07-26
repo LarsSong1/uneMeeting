@@ -1,35 +1,39 @@
-import { StyleSheet, TouchableOpacity, Picker } from 'react-native'
-import React, { useState } from 'react'
-import { Box, Stack, View, Input, FormControl, Select, CheckIcon, Heading, Center, Image, Text, Button, Icon } from 'native-base'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Box, Stack, View, Input, FormControl, Heading, Image, Text, Button, Icon } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../nagevacion';
 import * as imagePicker from 'expo-image-picker'
-import { createPost } from '../assets/Api/pocketBase';
+import { client, createPost, getPosts } from '../assets/Api/pocketBase';
+import {Picker} from '@react-native-picker/picker';
 
 
 
 const AddConference = () => {
   // const [service, setService] = useState('');
-  const [imageForm, setImageForm] = useState(null)
+  const [imageForm, setImageForm] = useState('')
   const [tittle, setTittle] = useState('')
   const [description, setDescription] = useState('')
   const [area, setArea] = useState('')
+  const [imageFileName, setImageFileName] = useState('');
 
-
-  const handleTittle = (e) =>{
-    setTittle(e)
-    console.log( setTittle(e))
+  const handleTittle = (text) =>{
+    setTittle(text)
+    console.log(typeof tittle)
+    // console.log(imageForm.localUri)
   }
 
   const handleDescription = (e) => {
     setDescription(e)
+    console.log(typeof description)
   }
 
 
   const handleCategoryChange = (value) => {
     setArea(value);
+    console.log(typeof area)
+    console.log(imageFileName)
   };
-
 
 
   const handleConferenceForm = () => {
@@ -37,30 +41,34 @@ const AddConference = () => {
       window.alert('ingresa un titulo')
       return;
     }
-    createPost(tittle, description, area, imageForm)
+    createPost(tittle, description, area, imageForm.localUri)
     window.alert('se envio con exito')
   }
+
+
 
   // imagePicker
   let selectImage = async () => {
     let permissionImage = await imagePicker.requestCameraPermissionsAsync()
 
-
     if (permissionImage.granted == false) {
       alert('Permision denied')
     }
-
 
     const pickerResult = await imagePicker.launchImageLibraryAsync()
     if (pickerResult.canceled == true) {
       return;
     }
 
-    setImageForm({ localUri: pickerResult.uri })
+    // setImageForm({ localUri: pickerResult.uri })
+ 
+
+    setImageForm({ localUri: pickerResult.uri });
+    
   }
 
 
-
+  const defaultImg = 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
 
 
 
@@ -97,14 +105,14 @@ const AddConference = () => {
             </Stack>
           </FormControl>
           {/* area */}
-          <FormControl isRequired isInvalid>
+          <FormControl isRequired>
             <Stack mx='4'>
               <View backgroundColor={colors.lead} mb={3} mt={3}>
                 <Text >Escoge una Categoría</Text>
                 <Picker style={styles.picker} onValueChange={handleCategoryChange} selectedValue={area}>
                   <Picker.Item label="Economía" value="Economía" />
                   <Picker.Item label="Ofimática" value="Ofimática" />
-                  <Picker.Item label="Ciencias Naturales" value="Ciencias Naturales" />
+                  <Picker.Item label="Ciencias Naturales" value="Ciencias Naturales" /> 
                 </Picker>
           
               </View>
@@ -112,10 +120,10 @@ const AddConference = () => {
           </FormControl>
 
           {/* image */}
-          <FormControl isRequired isInvalid>
+          <FormControl isRequired>
             <Stack mx='4'>
 
-              <Image alt='imagenPorSubir' source={{ uri: imageForm !== null ? imageForm.localUri : 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80' }} height={150} />
+              <Image alt='imagenPorSubir' source={{ uri: imageForm !== '' ? imageForm.localUri : defaultImg }} height={150} />
               <Button mt={3} onPress={selectImage}>
                 Escoge una imagen
               </Button>

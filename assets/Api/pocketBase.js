@@ -9,14 +9,19 @@ export async function getPosts() {
 }
 
 
-export async function createPost(tittle, description, area, image) {
+export async function createPost(title, description, area, image) {
+ 
+
+    // const sendPost = await client.collection('posts').create(formData)
+
+
     const data = {
-        "title": tittle,
+        "title": title,
         "description": description,
         "area": area,
         "image": image
     }
-    await client.collection('posts').create(data)
+    await client.collection('posts').create(data)   
 }
 
 
