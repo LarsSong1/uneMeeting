@@ -9,19 +9,26 @@ export async function getPosts() {
 }
 
 
-export async function createPost(title, description, area, image) {
+export async function createPost(title, description, area, blob) {
  
 
-    // const sendPost = await client.collection('posts').create(formData)
+    const formData = new FormData()
+
+    formData.append("title", title)
+    formData.append("description", description)
+    formData.append("area", area)
+    formData.append("image", blob)
+    await client.collection('posts').create(formData) 
 
 
-    const data = {
-        "title": title,
-        "description": description,
-        "area": area,
-        "image": image
-    }
-    await client.collection('posts').create(data)   
+    // const data = {
+    //     "title": title,
+    //     "description": description,
+    //     "area": area,
+    //     "image": image
+    // }
+    // await client.collection('posts').create(data)   
+    // console.log(await client.collection('posts').create(data))
 }
 
 

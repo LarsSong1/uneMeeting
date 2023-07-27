@@ -5,7 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../nagevacion';
 import * as imagePicker from 'expo-image-picker'
 import { client, createPost, getPosts } from '../assets/Api/pocketBase';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
+import { decode } from 'base-64';
 
 
 
@@ -17,31 +18,47 @@ const AddConference = () => {
   const [area, setArea] = useState('')
   const [imageFileName, setImageFileName] = useState('');
 
-  const handleTittle = (text) =>{
+  const handleTittle = (text) => {
     setTittle(text)
-    console.log(typeof tittle)
-    // console.log(imageForm.localUri)
+
   }
 
   const handleDescription = (e) => {
     setDescription(e)
-    console.log(typeof description)
+
   }
 
 
   const handleCategoryChange = (value) => {
     setArea(value);
-    console.log(typeof area)
-    console.log(imageFileName)
+
   };
 
 
+
+
   const handleConferenceForm = () => {
-    if(!tittle){
+    if (!tittle) {
       window.alert('ingresa un titulo')
       return;
     }
-    createPost(tittle, description, area, imageForm.localUri)
+
+
+    const base64Image = `${imageForm.localUri}`
+  
+    // console.log(imageForm.localUri)
+    const binaryString = decode(base64Image.split(',')[1]);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+  
+    const blob = new Blob([bytes], { type: "image/jpeg" });
+
+
+
+    createPost(tittle, description, area, blob)
     window.alert('se envio con exito')
   }
 
@@ -60,12 +77,19 @@ const AddConference = () => {
       return;
     }
 
-    // setImageForm({ localUri: pickerResult.uri })
- 
 
-    setImageForm({ localUri: pickerResult.uri });
-    
+    // setImageForm({ localUri: pickerResult.uri })
+    const selectedAsset = pickerResult.assets[0];
+    const imageUri = selectedAsset.uri;
+
+
+    setImageForm({ localUri: imageUri });
+
+
   }
+
+
+
 
 
   const defaultImg = 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
@@ -112,9 +136,9 @@ const AddConference = () => {
                 <Picker style={styles.picker} onValueChange={handleCategoryChange} selectedValue={area}>
                   <Picker.Item label="Economía" value="Economía" />
                   <Picker.Item label="Ofimática" value="Ofimática" />
-                  <Picker.Item label="Ciencias Naturales" value="Ciencias Naturales" /> 
+                  <Picker.Item label="Ciencias Naturales" value="Ciencias Naturales" />
                 </Picker>
-          
+
               </View>
             </Stack>
           </FormControl>
@@ -133,12 +157,12 @@ const AddConference = () => {
                 Selecciona una imagen por favor
               </FormControl.ErrorMessage>
 
-              
+
             </Stack>
 
           </FormControl>
           <Button leftIcon={<Icon as={Ionicons} name="cloud-upload" size="sm" />} onPress={handleConferenceForm}>
-                Enviar Post
+            Enviar Post
           </Button>
         </Box>
       </Box>
@@ -160,7 +184,7 @@ const styles = StyleSheet.create({
 
   },
   picker: {
-    backgroundColor: '#f1f1e6', 
+    backgroundColor: '#f1f1e6',
     marginTop: 2
   }
 })
