@@ -50,7 +50,7 @@ const Conference = () => {
     const imageLink = `https://une-meeting.pockethost.io/api/files/${collectionId[index]}/${postId[index]}/${collectionImages[index]}`
     return (
       <View flexDirection={'row'} mb={3}>
-          <TouchableOpacity style={styles.botonConferencia} onPress={()=> navigate.navigate('conferenceID', {idPost: idPost})}>
+          <TouchableOpacity style={styles.botonConferencia} onPress={()=> navigate.navigate('conferenceID', {id: idPost})}>
             <ImageBackground style={styles.imagenConferencias} resizeMode='cover' source={{
               uri: imageLink
             }} borderRadius={5}>

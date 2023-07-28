@@ -7,60 +7,78 @@ import { client } from '../assets/Api/pocketBase'
 
 
 
-const ConferenceID = ({route}) => {
+const ConferenceID = ({ route }) => {
     const { id } = route.params
     const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
         const getOneResult = async () => {
             try {
-                const response = await client.collection('posts').getOne()
+                const response = await client.collection('posts').getOne(id)
                 setPost(response);
+                setLoading(false);
+                
+                
             } catch (error) {
                 console.error('Error fetching post details:', error);
-               
+                setLoading(false);
+
             }
         }
 
 
 
         getOneResult();
-    }, [])
+    }, [id]);
+    if (loading) {
+        return <Text>Cargando</Text>;
+    }
+
+    console.log(post)
+    const imageLink = `https://une-meeting.pockethost.io/api/files/${post.collectionId}/${post.id}/${post.image}`
 
     return (
         <View style={styles.contenedor}>
-            <TouchableOpacity style={styles.btnSeleccionado}>
-                <ImageBackground resizeMode={'cover'} source={{
-                    uri: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
-                }} style={styles.imgSeleccionada}>
-                    <Heading pl={2} color={colors.lead} fontWeight={'bold'} size={'sm'}>Sopita Alejandro</Heading>
-                    <Text pl={2} mb={2} color={colors.lead}>Tics y su impacto en la sociedad</Text>
-                </ImageBackground>
-            </TouchableOpacity>
-            <Heading mt={5}>Tics y su impacto en la sociedad</Heading>
-            <Text mt={2}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ad sint tempore adipisci consequuntur ullam expedita voluptatem accusantium voluptatum eos quia dignissimos qui assumenda possimus, maiores, quod minus eaque, enim explicabo!</Text>
+            {post ? (
+                <View>
+                    <TouchableOpacity style={styles.btnSeleccionado}>
+                        <ImageBackground resizeMode={'cover'} source={{
+                            uri: imageLink
+                        }} style={styles.imgSeleccionada}>
+                            <Heading pl={2} color={colors.lead} size={'sm'}>{post.user}</Heading>
+                            <Text pl={2} mb={2} color={colors.lead}>{post.title}</Text>
+                        </ImageBackground>
+                    </TouchableOpacity>
+                    <Heading mt={5}>{post.title}</Heading>
+                    <Text mt={2}>{post.description}</Text>
 
 
-            <Box alignItems="center" mr={5} mt={5}>
-                <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5">
-                    <Box>
-                        <Text color="coolGray.800" fontWeight="bold" fontSize="md" textAlign={'center'}>
-                            Entrar al evento
-                        </Text>
-                        <Text mt="2" fontSize="sm" color="coolGray.700" textAlign={'center'}>
-                            Para acceder a la reunión debes darle click al siguiente botón
-                        </Text>
+                    <Box alignItems="center" mr={5} mt={5}>
+                        <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5">
+                            <Box>
+                                <Text color="coolGray.800" fontWeight="bold" fontSize="md" textAlign={'center'}>
+                                    Entrar al evento
+                                </Text>
+                                <Text mt="2" fontSize="sm" color="coolGray.700" textAlign={'center'}>
+                                    Para acceder a la reunión debes darle click al siguiente botón
+                                </Text>
 
 
 
-                        <TouchableOpacity style={styles.btnIr}>
-                            <Text textAlign='center' color={colors.lead} bold>ir</Text>
-                        </TouchableOpacity>
+                                <TouchableOpacity style={styles.btnIr}>
+                                    <Text textAlign='center' color={colors.lead} bold>ir</Text>
+                                </TouchableOpacity>
 
+                            </Box>
+                        </Pressable>
                     </Box>
-                </Pressable>
-            </Box>
+                </View>
+            ) : (
+                <Text>No se encontró el registro.</Text>
+            )}
+
         </View>
     )
 }
