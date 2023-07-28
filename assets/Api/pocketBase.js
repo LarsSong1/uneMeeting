@@ -20,15 +20,6 @@ export async function createPost(title, description, area, blob) {
     formData.append("image", blob)
     await client.collection('posts').create(formData) 
 
-
-    // const data = {
-    //     "title": title,
-    //     "description": description,
-    //     "area": area,
-    //     "image": image
-    // }
-    // await client.collection('posts').create(data)   
-    // console.log(await client.collection('posts').create(data))
 }
 
 

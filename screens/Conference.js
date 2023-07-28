@@ -1,17 +1,74 @@
-import { StyleSheet, TouchableOpacity, ImageBackground } from 'react-native'
-import React from 'react'
+import { StyleSheet, TouchableOpacity, ImageBackground, FlatList } from 'react-native'
+import React, { useState, useEffect }from 'react'
 import { Text, Button, Box, View, Heading, Flex } from 'native-base'
 import InputSearch from '../components/inputSearch'
 import { useNavigation } from '@react-navigation/native'
 import Filtros from '../components/filtros'
 import { colors } from '../nagevacion'
 import { Ionicons } from '@expo/vector-icons';
+import { getPosts } from '../assets/Api/pocketBase'
 
 
 
 
 const Conference = () => {
   const navigate = useNavigation();
+  const [post, setPost] = useState([])
+  const [collectionId, setCollectionId] = useState([])
+  const [collectionImages, setCollectionImage] = useState([])
+  const [postId, setPostId] = useState([])
+  const [postArea, setPostArea] = useState([])
+  
+  useEffect(() => {
+    getPosts().then((res) => {
+      setPost(res)
+
+      const collectionId = res.map(item => item.collectionId);
+      setCollectionId(collectionId)
+
+      const collectionImage = res.map(item => item.image);
+      setCollectionImage(collectionImage)
+
+      const id = res.map(item => item.id);
+      setPostId(id)
+
+
+      const areaName = res.map(item => item.area)
+      setPostArea(areaName)
+
+
+    
+    })
+  }, []);
+
+
+
+  const conferenceScroll = ({ item, index } ) => {
+
+    const idPost = postId[index]
+
+    const imageLink = `https://une-meeting.pockethost.io/api/files/${collectionId[index]}/${postId[index]}/${collectionImages[index]}`
+    return (
+      <View flexDirection={'row'} mb={3}>
+          <TouchableOpacity style={styles.botonConferencia} onPress={()=> navigate.navigate('conferenceID', {idPost: idPost})}>
+            <ImageBackground style={styles.imagenConferencias} resizeMode='cover' source={{
+              uri: imageLink
+            }} borderRadius={5}>
+              <Heading pb={2} pl={2} color={colors.lead} size={'sm'}>{item.user}</Heading>
+              <Text pb={2} pr={2} color={colors.lead}>{item.area}</Text>
+            </ImageBackground>
+
+          </TouchableOpacity>
+          <View pl={5} width={'95%'} flex={1} justifyContent={'flex-start'} alignItems={'flex-start'} mr={2}>
+            <Heading  size={'md'}>{item.title}</Heading>
+            <Text ellipsizeMode='tail' numberOfLines={4} textAlign={'justify'}>{item.description}</Text>
+          </View>
+        </View>
+    )
+  }
+
+ 
+
   return (
     <View style={styles.contenedor}>
       <InputSearch />
@@ -19,22 +76,12 @@ const Conference = () => {
       <View mt={5}>
         <Filtros />
       </View>
-      <View mt={5}>
-        <View flexDirection={'row'}>
-          <TouchableOpacity style={styles.botonConferencia}>
-            <ImageBackground style={styles.imagenConferencia} resizeMode='cover' source={{
-              uri: 'https://images.unsplash.com/photo-1477281765962-ef34e8bb0967?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1033&q=80'
-            }} borderRadius={5}>
-              <Heading pb={2} pl={2} color={colors.lead} size={'sm'}>Francis B.</Heading>
-              <Text pb={2} pr={2} color={colors.lead}>Estadistica</Text>
-            </ImageBackground>
-
-          </TouchableOpacity>
-          <View pl={5} width={'95%'} flex={1} justifyContent={'center'} alignItems={'flex-start'} mr={2}>
-            <Heading  size={'md'}>Sopa</Heading>
-            <Text ellipsizeMode='tail' numberOfLines={4} textAlign={'justify'}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sodales a sem at accumsan. Nam convallis rhoncus nisi, sit amet sagittis erat. Nam ac turpis varius ante condimentum fermentum. Sed nec risus</Text>
-          </View>
-        </View>
+      <View mt={5} flex={1}>
+        <FlatList
+          data={post}
+          renderItem={conferenceScroll}
+          showsVerticalScrollIndicator={false}
+        />
 
       </View>
 
@@ -56,7 +103,7 @@ const styles = StyleSheet.create({
     paddingLeft: '5%',
     paddingTop: '10%'
   },
-  imagenConferencia: {
+  imagenConferencias: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -69,10 +116,11 @@ const styles = StyleSheet.create({
     width: 190,
     height: 130,
   
-  
-  
-    
+  },
 
+  listaConferencias: {
+    marginBottom: 10,
+    height: 150
   }
 })
 

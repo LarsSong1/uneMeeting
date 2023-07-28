@@ -1,4 +1,4 @@
-import { View} from 'react-native'
+import { View, StyleSheet} from 'react-native'
 import React, { useEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native'
@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { NativeBaseProvider, Image, Text } from 'native-base'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Settings from './screens/settings';
+import ConferenceID from './screens/conferenceID';
 
 
 
@@ -40,10 +41,15 @@ function Configuration() {
 
 function AddStack() {
     return(
-        <addConferenceStack.Navigator initialRouteName='addConference' screenOptions={{ headerShown: false }} >
+        <addConferenceStack.Navigator initialRouteName='BuscarConferencia' screenOptions={{ headerShown: false }} >
             <addConferenceStack.Screen  name='BuscarConferencia' component={Conference} />
 
             <addConferenceStack.Screen  name='addConference'  component={AddConference} options={{ headerShown: true }}/>
+
+            <addConferenceStack.Screen name='conferenceID' component={ConferenceID} options={{ headerShown: true,
+            headerTitleAlign:'center',
+            headerTitle: 'Todas las conferencias',
+            headerStyle: styles.headerNav }}/>
         </addConferenceStack.Navigator>
     )
 }
@@ -123,3 +129,10 @@ export default function Navegacion() {
     );
 }
 
+
+
+const styles = StyleSheet.create({
+    headerNav: {
+        fontWeight: 'bold',
+    }
+})

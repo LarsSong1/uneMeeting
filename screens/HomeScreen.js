@@ -9,20 +9,14 @@ import { client, getPosts } from '../assets/Api/pocketBase';
 
 
 
-const POPULAR = [
-  { url: 'https://images.unsplash.com/photo-1582192730841-2a682d7375f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80', nombre: 'Francis B.', tema: 'Estadistica' },
-  { url: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', nombre: 'Derek J.', tema: 'Ciencias Sociales' },
-  { url: 'https://images.unsplash.com/photo-1626125345510-4603468eedfb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', nombre: 'Francis B.', tema: 'Sopa' }
-]
+
 
 
 
 const HomeScreen = () => {
 
   // Listado de Tareas post PocketBase
-
   const navigate = useNavigation();
-
   const [post, setPost] = useState([])
   const [collectionId, setCollectionId] = useState([])
   const [collectionImages, setCollectionImage] = useState([])
@@ -48,10 +42,6 @@ const HomeScreen = () => {
 
       const areaName = res.map(item => item.area)
       setPostArea(areaName)
-
-   
-      
-      
     })
 
   }, []);
@@ -102,7 +92,7 @@ const HomeScreen = () => {
         <Filtros />
       </View>
       <View mt={5}>
-        <Heading size={'md'} bold></Heading>
+        <Heading size={'md'} bold>Recomendaciones</Heading>
         <TouchableOpacity style={styles.botonRecomendaciones}>
           <ImageBackground resizeMode={'cover'} source={{
             uri: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
@@ -119,11 +109,10 @@ const HomeScreen = () => {
           horizontal
           renderItem={conferenceScroll}
           showsHorizontalScrollIndicator={false}
-
         />
         <Heading bold size={'md'} mt={0}>Conferencias Populares</Heading>
         <FlatList
-          data={POPULAR}
+          data={post}
           horizontal
           renderItem={conferenceScroll}
           showsHorizontalScrollIndicator={false}
