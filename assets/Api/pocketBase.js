@@ -5,6 +5,9 @@ export const client = new PocketBase(url)
 client.autoCancellation(false);
 
 
+
+
+
 export async function getPosts() {
     return await client.collection("posts").getFullList();
 }
@@ -13,7 +16,6 @@ export async function getPosts() {
 export async function createPost(title, description, area, blob) {
 
     const formData = new FormData()
-
     formData.append("title", title)
     formData.append("description", description)
     formData.append("area", area)
@@ -22,5 +24,12 @@ export async function createPost(title, description, area, blob) {
 
 }
 
-
+export async function deletePost (id){
+    let confirmDelete = window.confirm('Estas seguro que quieres eliminar?')
+    if (!confirmDelete) {
+        return
+    }
+    await client.collection('posts').delete(id)
+    
+}
 

@@ -10,6 +10,8 @@ import { NativeBaseProvider, Image, Text } from 'native-base'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Settings from './screens/settings';
 import ConferenceID from './screens/conferenceID';
+import EditConference from './screens/editConference';
+
 
 
 
@@ -50,6 +52,11 @@ function AddStack() {
             headerTitleAlign:'center',
             headerTitle: 'Todas las conferencias',
             headerStyle: styles.headerNav }}/>
+
+
+            <addConferenceStack.Screen name='editConference' component={EditConference} options={{headerShown: true,
+            headerTitle: 'Editar Conferencia'
+            }}/>
         </addConferenceStack.Navigator>
     )
 }

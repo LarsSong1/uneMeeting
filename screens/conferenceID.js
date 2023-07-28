@@ -2,8 +2,9 @@ import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, Heading, Box, Pressable, Stack, Button, Icon } from 'native-base'
 import { colors } from '../nagevacion'
-import { client } from '../assets/Api/pocketBase'
+import { client, deletePost } from '../assets/Api/pocketBase'
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -12,6 +13,7 @@ const ConferenceID = ({ route }) => {
     const { id } = route.params
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigation()
 
 
     useEffect(() => {
@@ -59,10 +61,20 @@ const ConferenceID = ({ route }) => {
                         md: "row",
                         
                     }} space={4}>
-                        <Button leftIcon={<Icon as={Ionicons} name="pencil" size="sm" />} backgroundColor={colors.yellow}>
+                        <Button leftIcon={<Icon as={Ionicons} name="pencil" size="sm" />} backgroundColor={colors.yellow} onPress={
+                            ()=>{navigate.navigate('editConference')}
+                        }>
                             Editar
                         </Button>
-                        <Button variant="subtle" endIcon={<Icon as={Ionicons} name="trash" size="sm" color={colors.lead}/>} backgroundColor={'#000000'} >
+                        <Button variant="subtle" endIcon={<Icon as={Ionicons} name="trash" size="sm" color={colors.lead}/>} backgroundColor={'#000000'} onPress={function eliminar (){
+                            deletePost(post.id)
+                            window.location.reload()
+                            navigate.navigate('BuscarConferencia')
+        
+                            
+                        }
+                    
+                        }>
                             <Text color={colors.lead}>Eliminar</Text>
                         </Button>
                     </Stack>
