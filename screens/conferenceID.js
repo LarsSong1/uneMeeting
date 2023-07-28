@@ -1,8 +1,9 @@
 import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { View, Text, Heading, Box, Pressable } from 'native-base'
+import { View, Text, Heading, Box, Pressable, Stack, Button, Icon } from 'native-base'
 import { colors } from '../nagevacion'
 import { client } from '../assets/Api/pocketBase'
+import { Ionicons } from '@expo/vector-icons';
 
 
 
@@ -19,8 +20,7 @@ const ConferenceID = ({ route }) => {
                 const response = await client.collection('posts').getOne(id)
                 setPost(response);
                 setLoading(false);
-                
-                
+
             } catch (error) {
                 console.error('Error fetching post details:', error);
                 setLoading(false);
@@ -52,8 +52,20 @@ const ConferenceID = ({ route }) => {
                         </ImageBackground>
                     </TouchableOpacity>
                     <Heading mt={5}>{post.title}</Heading>
-                    <Text mt={2}>{post.description}</Text>
+                    <Text mt={2} ml={2}>{post.description}</Text>
 
+                    <Stack mt={5} justifyContent={'flex-end'} mr={5} direction={{
+                        base: "row",
+                        md: "row",
+                        
+                    }} space={4}>
+                        <Button leftIcon={<Icon as={Ionicons} name="pencil" size="sm" />} backgroundColor={colors.yellow}>
+                            Editar
+                        </Button>
+                        <Button variant="subtle" endIcon={<Icon as={Ionicons} name="trash" size="sm" color={colors.lead}/>} backgroundColor={'#000000'} >
+                            <Text color={colors.lead}>Eliminar</Text>
+                        </Button>
+                    </Stack>
 
                     <Box alignItems="center" mr={5} mt={5}>
                         <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5">
@@ -65,8 +77,6 @@ const ConferenceID = ({ route }) => {
                                     Para acceder a la reunión debes darle click al siguiente botón
                                 </Text>
 
-
-
                                 <TouchableOpacity style={styles.btnIr}>
                                     <Text textAlign='center' color={colors.lead} bold>ir</Text>
                                 </TouchableOpacity>
@@ -74,6 +84,8 @@ const ConferenceID = ({ route }) => {
                             </Box>
                         </Pressable>
                     </Box>
+
+
                 </View>
             ) : (
                 <Text>No se encontró el registro.</Text>
