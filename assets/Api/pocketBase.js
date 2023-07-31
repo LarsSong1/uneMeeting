@@ -1,29 +1,23 @@
 import PocketBase from 'pocketbase'
 const url = 'https://une-meeting.pockethost.io'
-// const url = `${import.meta.env.REACT_POCKETBASE}`
 export const client = new PocketBase(url)
 client.autoCancellation(false);
 
 
-
-
+export const isUser = client.authStore.isValid;
 
 export async function getPosts() {
     return await client.collection("posts").getFullList();
 }
 
-
 export async function createPost(title, description, area, blob) {
-
     try {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("description", description);
         formData.append("area", area);
-
-
+        // formData.append("user", client.authStore.model.id)
         await client.collection('posts').create(formData);
-
         alert('Post created correctly')
 
     } catch (error) {
@@ -34,15 +28,12 @@ export async function createPost(title, description, area, blob) {
 }
 
 export async function deletePost(id) {
-
     try {
         await client.collection("posts").delete(id)
         alert('Se ha Eliminado un post')
-
     } catch (error) {
         alert('no se ha eliminado', error)
     }
-
 
 }
 
@@ -52,6 +43,7 @@ export async function updatePost(id, title, description, area) {
         formData.append("title", title)
         formData.append("description", description)
         formData.append("area", area)
+        // formData.append("user", client.authStore.model.id)
         await client.collection('posts').update(id, formData)
         
         alert('los datos han sido alterados')
@@ -61,3 +53,19 @@ export async function updatePost(id, title, description, area) {
     }
 
 }
+
+
+export async function login(username, password) {
+    await client.collection('posts').authWithPassword(username, password)
+}
+
+export function logout(){
+    client.authStore.clear()
+}
+
+
+export async function signUp(username, password){
+    const data = {username: username, password: password, passwordConfirm: password}
+    await client.collection('posts').create(data)
+}
+

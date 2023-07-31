@@ -8,13 +8,6 @@ import { colors } from './colores'
 
 
 const LoadingPage = ({ navigation }) => {
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         navigation.navigate('Home')
-    //     }, 3000); // Tiempo en milisegundos (en este caso, 3 segundos)
-
-    //     return () => clearTimeout(timer);
-    // }, []);
 
     return (
         <View color={colors.lead}>
