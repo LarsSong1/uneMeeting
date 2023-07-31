@@ -1,8 +1,8 @@
 import { View, Image, Text } from 'native-base'
 import React from 'react'
-import { colors } from '../nagevacion'
 import logo from '../assets/logo.svg'
 import { useEffect } from 'react'
+import { colors } from './colores'
 
 
 

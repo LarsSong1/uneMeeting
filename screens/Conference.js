@@ -4,7 +4,7 @@ import { Text, Button, Box, View, Heading, Flex } from 'native-base'
 import InputSearch from '../components/inputSearch'
 import { useNavigation } from '@react-navigation/native'
 import Filtros from '../components/filtros'
-import { colors } from '../nagevacion'
+import { colors } from './colores'
 import { Ionicons } from '@expo/vector-icons';
 import { getPosts } from '../assets/Api/pocketBase'
 
@@ -22,38 +22,26 @@ const Conference = () => {
   useEffect(() => {
     getPosts().then((res) => {
       setPost(res)
-
       const collectionId = res.map(item => item.collectionId);
       setCollectionId(collectionId)
-
       const collectionImage = res.map(item => item.image);
       setCollectionImage(collectionImage)
-
       const id = res.map(item => item.id);
       setPostId(id)
-
-
       const areaName = res.map(item => item.area)
       setPostArea(areaName)
-
-
-    
     })
   }, []);
 
 
 
   const conferenceScroll = ({ item, index } ) => {
-
     const idPost = postId[index]
 
-    const imageLink = `https://une-meeting.pockethost.io/api/files/${collectionId[index]}/${postId[index]}/${collectionImages[index]}`
     return (
       <View flexDirection={'row'} mb={3}>
           <TouchableOpacity style={styles.botonConferencia} onPress={()=> navigate.navigate('conferenceID', {id: idPost})}>
-            <ImageBackground style={styles.imagenConferencias} resizeMode='cover' source={{
-              uri: imageLink
-            }} borderRadius={5}>
+            <ImageBackground style={styles.imagenConferencias} resizeMode='cover' source={require('../assets/img/conferenceImg.jpg')} borderRadius={5}>
               <Heading pb={2} pl={2} color={colors.lead} size={'sm'}>{item.user}</Heading>
               <Text pb={2} pr={2} color={colors.lead}>{item.area}</Text>
             </ImageBackground>

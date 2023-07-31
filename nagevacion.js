@@ -11,6 +11,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Settings from './screens/settings';
 import ConferenceID from './screens/conferenceID';
 import EditConference from './screens/editConference';
+import colors from './screens/colores'
 
 
 
@@ -20,13 +21,6 @@ const addConferenceStack = createNativeStackNavigator();
 const settingsAcccount = createNativeStackNavigator();
 
 
-export const colors = {
-    blue: '#002334',
-    sky_blue: '#a8c5ddc',
-    yellow: '#ea9a27',
-    lead: '#f1f1e6',
-    white: '#ffffff'
-}
 
 
 
@@ -72,7 +66,7 @@ function MyNavs() {
         <Tab.Navigator 
             initialRouteName='Buscar'
             screenOptions={{
-                tabBarActiveTintColor: colors.sky_blue,
+                tabBarActiveTintColor: '#a8c5ddc',
                 tabBarStyle: {
                     backgroundColor: '#002334',
                     height: 72,
@@ -91,10 +85,10 @@ function MyNavs() {
                         paddingBottom: 10,
                         fontSize: 15,
                         fontWeight: 'bold',
-                        color: colors.lead,
+                        color: '#f1f1e6',
                     },
                     tabBarIcon: () => (
-                        <Ionicons name="home" size={24} color={colors.lead} />
+                        <Ionicons name="home" size={24} color={'#f1f1e6'} />
                     ),
                     backgroundColor: '#002334'
                 }}
@@ -107,10 +101,10 @@ function MyNavs() {
                         paddingBottom: 10,
                         fontSize: 15,
                         fontWeight: 'bold',
-                        color: colors.lead
+                        color: '#f1f1e6'
                     },
                     tabBarIcon: () => (
-                        <Ionicons name="search" size={24} color={colors.lead} />
+                        <Ionicons name="search" size={24} color={'#f1f1e6'} />
                     ),
                     
                 }}
@@ -127,9 +121,7 @@ export default function Navegacion() {
             <NativeBaseProvider>
                 <View style={{flex:1}}>
                     <MyNavs /> 
-                    
                 </View>
-
             </NativeBaseProvider>
         </NavigationContainer>
 

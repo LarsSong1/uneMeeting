@@ -1,25 +1,34 @@
 import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, Heading, Box, Pressable, Stack, Button, Icon } from 'native-base'
-import { colors } from '../nagevacion'
-import { client, deletePost } from '../assets/Api/pocketBase'
+import { colors } from './colores'
+import { client, deletePost, updatePost } from '../assets/Api/pocketBase'
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 
 
 
-const ConferenceID = ({ route }) => {
-    const { id } = route.params
-    const [post, setPost] = useState(null);
+const ConferenceID = () => {
+    const route = useRoute()
+    const [post, setPost] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigation()
+
+
+    const deleteId = async ()=>{
+        const idIndex = route.params.id
+        console.log(idIndex)
+        await deletePost(idIndex)
+        navigate.goBack()
+
+    }
 
 
     useEffect(() => {
         const getOneResult = async () => {
             try {
-                const response = await client.collection('posts').getOne(id)
+                const response = await client.collection('posts').getOne(route.params.id)
                 setPost(response);
                 setLoading(false);
 
@@ -33,7 +42,7 @@ const ConferenceID = ({ route }) => {
 
 
         getOneResult();
-    }, [id]);
+    }, [route.params.id]);
     if (loading) {
         return <Text>Cargando</Text>;
     }
@@ -46,9 +55,7 @@ const ConferenceID = ({ route }) => {
             {post ? (
                 <View>
                     <TouchableOpacity style={styles.btnSeleccionado}>
-                        <ImageBackground resizeMode={'cover'} source={{
-                            uri: imageLink
-                        }} style={styles.imgSeleccionada}>
+                        <ImageBackground resizeMode={'cover'} source={require('../assets/img/conferenceImg.jpg')} style={styles.imgSeleccionada}>
                             <Heading pl={2} color={colors.lead} size={'sm'}>{post.user}</Heading>
                             <Text pl={2} mb={2} color={colors.lead}>{post.title}</Text>
                         </ImageBackground>
@@ -62,25 +69,20 @@ const ConferenceID = ({ route }) => {
                         
                     }} space={4}>
                         <Button leftIcon={<Icon as={Ionicons} name="pencil" size="sm" />} backgroundColor={colors.yellow} onPress={
-                            ()=>{navigate.navigate('editConference')}
+                            ()=>{navigate.navigate(`editConference`)
+                                
+                                
+                            }
                         }>
                             Editar
                         </Button>
-                        <Button variant="subtle" endIcon={<Icon as={Ionicons} name="trash" size="sm" color={colors.lead}/>} backgroundColor={'#000000'} onPress={function eliminar (){
-                            deletePost(post.id)
-                            window.location.reload()
-                            navigate.navigate('BuscarConferencia')
-        
-                            
-                        }
-                    
-                        }>
+                        <Button variant="subtle" endIcon={<Icon as={Ionicons} name="trash" size="sm" color={colors.lead}/>} backgroundColor={'#000000'} onPress={deleteId}>
                             <Text color={colors.lead}>Eliminar</Text>
                         </Button>
                     </Stack>
 
                     <Box alignItems="center" mr={5} mt={5}>
-                        <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5">
+                        <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" borderWidth="1" borderColor="coolGray.300" maxW="96" shadow="3" bg="coolGray.100" p="5" height={150} maxH={150}>
                             <Box>
                                 <Text color="coolGray.800" fontWeight="bold" fontSize="md" textAlign={'center'}>
                                     Entrar al evento

@@ -2,7 +2,7 @@ import { StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
 import { Text, View, Stack, Input, Icon, Pressable, Heading}  from  'native-base'
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../nagevacion';
+import { colors } from './colores';
 
 const LoginPage = () => {
   const [show, setShow] = useState(false);

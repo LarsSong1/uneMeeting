@@ -2,15 +2,10 @@ import { StyleSheet, TouchableOpacity, FlatList, ImageBackground } from 'react-n
 import React, { useEffect, useState } from 'react'
 import { Text, View, Heading, Image } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../nagevacion';
 import Filtros from '../components/filtros';
 import { useNavigation } from '@react-navigation/native';
 import { client, getPosts } from '../assets/Api/pocketBase';
-
-
-
-
-
+import { colors } from './colores';
 
 
 const HomeScreen = () => {
@@ -28,7 +23,6 @@ const HomeScreen = () => {
   useEffect(() => {
     getPosts().then((res) => {
       setPost(res)
-      console.log(res)
 
       const collectionId = res.map(item => item.collectionId);
       setCollectionId(collectionId)
@@ -56,9 +50,7 @@ const HomeScreen = () => {
     const imageLink = `https://une-meeting.pockethost.io/api/files/${collectionId[index]}/${postId[index]}/${collectionImages[index]}`
     return (
       <TouchableOpacity key={item.id} style={styles.botonConferenciasActivas}>
-          <ImageBackground source={{
-            uri: imageLink
-          }} resizeMode='cover' style={styles.imagenConferenciasActivas}>
+          <ImageBackground source={require('../assets/img/conferenceImg.jpg')} resizeMode='cover' style={styles.imagenConferenciasActivas}>
 
             <Heading pl={2} pb={2} color={colors.lead} size='sm'>{item.user}</Heading>
             <Text pr={2} pb={2} color={colors.lead} fontSize={10}>{item.area}</Text>
@@ -94,9 +86,7 @@ const HomeScreen = () => {
       <View mt={5}>
         <Heading size={'md'} bold>Recomendaciones</Heading>
         <TouchableOpacity style={styles.botonRecomendaciones}>
-          <ImageBackground resizeMode={'cover'} source={{
-            uri: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'
-          }} style={styles.imgRecomendaciones}>
+          <ImageBackground resizeMode={'cover'} source={require('../assets/img/conferenceImg.jpg')} style={styles.imgRecomendaciones}>
             <Heading pl={2} color={colors.lead} fontWeight={'bold'} size={'sm'}>Sopita Alejandro</Heading>
             <Text pl={2} mb={2} color={colors.lead}>Tics y su impacto en la sociedad</Text>
           </ImageBackground>
