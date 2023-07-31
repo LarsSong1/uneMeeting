@@ -66,6 +66,6 @@ export function logout(){
 
 export async function signUp(username, password){
     const data = {username: username, password: password, passwordConfirm: password}
-    await client.collection('posts').create(data)
+    await client.collection('users').create(data)
 }
 

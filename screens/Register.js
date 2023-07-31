@@ -46,7 +46,7 @@ const RegisterPage = () => {
           </Pressable>} placeholder="Confirma contraseña" onChangeText={(e)=>{setPasswordConfirm(e)}}/>
          <TouchableOpacity style={styles.btnIngresar}>
          <Text color={colors.lead}>
-              Ingresar
+              Registrarse
             </Text>
          </TouchableOpacity>
         </Stack>
