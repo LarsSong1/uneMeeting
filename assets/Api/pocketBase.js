@@ -21,34 +21,43 @@ export async function createPost(title, description, area, blob) {
         formData.append("description", description);
         formData.append("area", area);
 
-    
+
         await client.collection('posts').create(formData);
-    
+
         alert('Post created correctly')
-      } catch (error) {
+
+    } catch (error) {
         console.error("Error creating post:", error);
         throw error; // Re-throw the error to handle it in the component
-      }
+    }
 
 }
 
-export async function deletePost (id){
+export async function deletePost(id) {
 
-    try{
+    try {
         await client.collection("posts").delete(id)
-    
-    } catch (error){
+        alert('Se ha Eliminado un post')
+
+    } catch (error) {
         alert('no se ha eliminado', error)
     }
- 
-    
+
+
 }
 
-export async function updatePost (id){
-    const formData = new FormData()
-    formData.append("title", title)
-    formData.append("description", description)
-    formData.append("area", area)
-    formData.append("image", blob)
-    await client.collection('posts').update(id, formData)
+export async function updatePost(id, title, description, area) {
+    try {
+        const formData = new FormData()
+        formData.append("title", title)
+        formData.append("description", description)
+        formData.append("area", area)
+        await client.collection('posts').update(id, formData)
+        
+        alert('los datos han sido alterados')
+
+    } catch (error) {
+        alert('Ocurrio un error en edicion')
+    }
+
 }

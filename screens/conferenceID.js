@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native'
+import { StyleSheet, ImageBackground, TouchableOpacity, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, Heading, Box, Pressable, Stack, Button, Icon } from 'native-base'
 import { colors } from './colores'
@@ -16,7 +16,7 @@ const ConferenceID = () => {
     const navigate = useNavigation()
 
 
-    const deleteId = async ()=>{
+    const deleteId = async () => {
         const idIndex = route.params.id
         console.log(idIndex)
         await deletePost(idIndex)
@@ -66,17 +66,22 @@ const ConferenceID = () => {
                     <Stack mt={5} justifyContent={'flex-end'} mr={5} direction={{
                         base: "row",
                         md: "row",
-                        
+
                     }} space={4}>
                         <Button leftIcon={<Icon as={Ionicons} name="pencil" size="sm" />} backgroundColor={colors.yellow} onPress={
-                            ()=>{navigate.navigate(`editConference`)
-                                
-                                
+                            () => {
+                                navigate.navigate(`editConference`,
+                                    {
+                                        id: route.params.id,
+                                        title: post.title,
+                                        description: post.description,
+                                        area: post.area
+                                    });
                             }
                         }>
                             Editar
                         </Button>
-                        <Button variant="subtle" endIcon={<Icon as={Ionicons} name="trash" size="sm" color={colors.lead}/>} backgroundColor={'#000000'} onPress={deleteId}>
+                        <Button variant="subtle" endIcon={<Icon as={Ionicons} name="trash" size="sm" color={colors.lead} />} backgroundColor={'#000000'} onPress={deleteId}>
                             <Text color={colors.lead}>Eliminar</Text>
                         </Button>
                     </Stack>
@@ -91,7 +96,7 @@ const ConferenceID = () => {
                                     Para acceder a la reunión debes darle click al siguiente botón
                                 </Text>
 
-                                <TouchableOpacity style={styles.btnIr}>
+                                <TouchableOpacity style={styles.btnIr} onPress={()=>{Linking.openURL('https://www.youtube.com/')}}>
                                     <Text textAlign='center' color={colors.lead} bold>ir</Text>
                                 </TouchableOpacity>
 
