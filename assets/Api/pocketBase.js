@@ -10,13 +10,13 @@ export async function getPosts() {
     return await client.collection("posts").getFullList();
 }
 
-export async function createPost(title, description, area, blob) {
+export async function createPost(title, description, area) {
     try {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("description", description);
         formData.append("area", area);
-        // formData.append("user", client.authStore.model.id)
+        formData.append("user", client.authStore.model.id)
         await client.collection('posts').create(formData);
         alert('Post created correctly')
 
@@ -43,7 +43,7 @@ export async function updatePost(id, title, description, area) {
         formData.append("title", title)
         formData.append("description", description)
         formData.append("area", area)
-        // formData.append("user", client.authStore.model.id)
+        formData.append("user", client.authStore.model.id)
         await client.collection('posts').update(id, formData)
         
         alert('los datos han sido alterados')
@@ -56,7 +56,9 @@ export async function updatePost(id, title, description, area) {
 
 
 export async function login(username, password) {
-    await client.collection('posts').authWithPassword(username, password)
+    const data = await client.collection('users').authWithPassword(username, password)
+    console.log(data)
+
 }
 
 export function logout(){
@@ -64,8 +66,17 @@ export function logout(){
 }
 
 
-export async function signUp(username, password){
-    const data = {username: username, password: password, passwordConfirm: password}
-    await client.collection('users').create(data)
+export async function signUp(username, password, passwordConfirm){
+    try {
+        const formData = new FormData()
+        formData.append("username", username)
+        formData.append("password", password)
+        formData.append("passwordConfirm", passwordConfirm)
+        await client.collection('users').create(formData)
+        alert('se he creado un usuario')
+    }catch (error) {    
+        console.log(error)
+    }
+   
 }
 

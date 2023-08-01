@@ -1,6 +1,6 @@
 import { StyleSheet, Image, TouchableOpacity } from 'react-native'
-import React, {useState} from 'react'
-import { Text, View, Stack, Input, Icon, Pressable, Heading}  from  'native-base'
+import React, { useState } from 'react'
+import { Text, View, Stack, Input, Icon, Pressable, Heading } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from './colores';
 import { login } from '../assets/Api/pocketBase';
@@ -14,10 +14,16 @@ const LoginPage = () => {
   const navigate = useNavigation()
 
 
-  const handleSubmit = async () =>{
+  
+
+
+  const handleSubmit = async () => {
     await login(user, password)
+    navigate.navigate('MyNavs', {screen: 'Home'});
   }
 
+
+  
   
 
 
@@ -34,28 +40,31 @@ const LoginPage = () => {
           <Input borderRadius={15} style={styles.forms} w={{
             base: "75%",
             md: "25%"
-          }} 
-          InputLeftElement={<Icon as={<Ionicons name="person" size={24} color="black" />} size={5} ml="2" color="muted.400" />} placeholder="Usuario" onChangeText={(e)=>{setUser(e)}}/>
+          }}
+            InputLeftElement={<Icon as={<Ionicons name="person" size={24} color="black" />} size={5} ml="2" color="muted.400" />} placeholder="Usuario" onChangeText={(e) => { setUser(e) }} />
           <Input borderRadius={15} w={{
-      base: "75%",
-      md: "25%"
-    }} type={show ? "text" : "password"} InputRightElement={<Pressable onPress={() => setShow(!show)}>
+            base: "75%",
+            md: "25%"
+          }} type={show ? "text" : "password"} InputRightElement={<Pressable onPress={() => setShow(!show)}>
             <Icon as={<Ionicons name="eye-off" size={24} color="black" />} size={5} mr="2" color="muted.400" />
-          </Pressable>} placeholder="Contraseña" onChangeText={(e)=>{setPassword(e)}}/>
-          <TouchableOpacity style={styles.btnCrearCC} onPress={()=>{navigate.navigate('Register')}}>
-         <Text color={colors.lead}>
-              Crea una cuenta
-            </Text>
-         </TouchableOpacity>
+          </Pressable>} placeholder="Contraseña" onChangeText={(e) => { setPassword(e) }} />
 
-         <TouchableOpacity style={styles.btnIngresar}>
-         <Text color={colors.lead}>
+          <TouchableOpacity style={styles.btnIngresar} onPress={handleSubmit}>
+            <Text color={colors.lead}>
               Ingresar
             </Text>
-         </TouchableOpacity>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.btnCrearCC} onPress={() => { navigate.navigate('Register') }}>
+            <Text color={colors.lead}>
+              Crea una cuenta
+            </Text>
+          </TouchableOpacity>
+
+          
         </Stack>
       </View>
-      
+
     </View>
   )
 }
@@ -72,14 +81,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
 
   },
-  logo:{
+  logo: {
     width: 150,
     height: 100,
     resizeMode: 'contain'
-    
+
   },
   forms: {
-  
+
   },
   btnIngresar: {
     backgroundColor: 'black',
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 150
-    
+
   },
   btnCrearCC: {
     backgroundColor: '#ea9a27',
@@ -103,4 +112,4 @@ const styles = StyleSheet.create({
 
 
 
-export default LoginPage
+export default LoginPage

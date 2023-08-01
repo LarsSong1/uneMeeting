@@ -33,6 +33,10 @@ const HomeScreen = () => {
       const id = res.map(item => item.id);
       setPostId(id)
 
+      const unsubscribe = client.collection('posts').subscribe('*', function (e) {
+        console.log('Cambios en el registro:', e.record);
+
+      });
 
       const areaName = res.map(item => item.area)
       setPostArea(areaName)

@@ -6,7 +6,7 @@ import HomeScreen from './screens/HomeScreen';
 import Conference from './screens/Conference';
 import AddConference from './screens/AddConference';
 import { Ionicons } from '@expo/vector-icons';
-import { NativeBaseProvider, Image, Text } from 'native-base'
+import { NativeBaseProvider, Image, Text, Stack } from 'native-base'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Settings from './screens/settings';
 import ConferenceID from './screens/conferenceID';
@@ -17,21 +17,24 @@ import LoginPage from './screens/Login'
 import RegisterPage from './screens/Register'
 
 
+
+
 const Tab = createBottomTabNavigator();
 const addConferenceStack = createNativeStackNavigator();
-const settingsAcccount = createNativeStackNavigator();
+const settingsAccount = createNativeStackNavigator();
 const Rl = createNativeStackNavigator();
+const stack = createNativeStackNavigator();
 
 
 
-function ForSign (){
-    return(
+function ForSign() {
+    return (
         <Rl.Navigator initialRouteName='Login' screenOptions={{
             headerShown: false
         }}>
-            <Rl.Screen name='Login' component={LoginPage}/>
+            <Rl.Screen name='Login' component={LoginPage} />
 
-            <Rl.Screen name='Register' component={RegisterPage}/>
+            <Rl.Screen name='Register' component={RegisterPage} />
         </Rl.Navigator>
     )
 }
@@ -39,11 +42,11 @@ function ForSign (){
 
 function Configuration() {
     return (
-        <settingsAcccount.Navigator initialRouteName='Inicio' screenOptions={{ headerShown: false }}>
-            <settingsAcccount.Screen name='Inicio' component={HomeScreen} />
+        <settingsAccount.Navigator initialRouteName='Inicio' screenOptions={{ headerShown: false }}>
+            <settingsAccount.Screen name='Inicio' component={HomeScreen} />
 
-            <settingsAcccount.Screen name='settings' options={{ headerShown: true }} component={Settings} />
-        </settingsAcccount.Navigator>
+            <settingsAccount.Screen name='settings' options={{ headerShown: true }} component={Settings} />
+        </settingsAccount.Navigator>
     )
 }
 
@@ -77,65 +80,59 @@ function AddStack() {
 
 
 function MyNavs() {
-
-    useEffect(()=>{
-        setIsUser(false)
-    }, [])
-
-
-    const [user, setIsUser] = useState(false)
-    if (user) {
+   
         return (
-        <Tab.Navigator
-            initialRouteName='Inicio'
-            screenOptions={{
-                tabBarActiveTintColor: '#a8c5ddc',
-                tabBarStyle: {
-                    backgroundColor: '#002334',
-                    height: 72,
-                    paddingLeft: 55,
-                    paddingRight: 55,
-                },
-                headerShown: false,
-
-            }}
-        >
-
-            <Tab.Screen name='Home' component={Configuration}
-                options={{
-                    tabBarLabel: 'Inicio',
-                    tabBarLabelStyle: {
-                        paddingBottom: 10,
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: '#f1f1e6',
+            <Tab.Navigator
+                initialRouteName='Inicio'
+                screenOptions={{
+                    tabBarActiveTintColor: '#a8c5ddc',
+                    tabBarStyle: {
+                        backgroundColor: '#002334',
+                        height: 72,
+                        paddingLeft: 55,
+                        paddingRight: 55,
                     },
-                    tabBarIcon: () => (
-                        <Ionicons name="home" size={24} color={'#f1f1e6'} />
-                    ),
-                    backgroundColor: '#002334'
-                }}
-            />
-
-            <Tab.Screen name='Buscar' component={AddStack}
-                options={{
-                    tabBarLabel: 'Buscar',
-                    tabBarLabelStyle: {
-                        paddingBottom: 10,
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: '#f1f1e6'
-                    },
-                    tabBarIcon: () => (
-                        <Ionicons name="search" size={24} color={'#f1f1e6'} />
-                    ),
+                    headerShown: false,
 
                 }}
-            />
-        </Tab.Navigator>
-    ) } else {
-        return (<ForSign/>)
-    }
+            >
+
+                <Tab.Screen name='Home' component={Configuration}
+                    options={{
+                        tabBarLabel: 'Inicio',
+                        tabBarLabelStyle: {
+                            paddingBottom: 10,
+                            fontSize: 15,
+                            fontWeight: 'bold',
+                            color: '#f1f1e6',
+                        },
+                        tabBarIcon: () => (
+                            <Ionicons name="home" size={24} color={'#f1f1e6'} />
+                        ),
+                        backgroundColor: '#002334'
+                    }}
+                />
+
+                <Tab.Screen name='Buscar' component={AddStack}
+                    options={{
+                        tabBarLabel: 'Buscar',
+                        tabBarLabelStyle: {
+                            paddingBottom: 10,
+                            fontSize: 15,
+                            fontWeight: 'bold',
+                            color: '#f1f1e6'
+                        },
+                        tabBarIcon: () => (
+                            <Ionicons name="search" size={24} color={'#f1f1e6'} />
+                        ),
+
+                    }}
+                />
+
+
+
+            </Tab.Navigator>
+        ) 
 }
 
 
@@ -144,9 +141,14 @@ export default function Navegacion() {
     return (
         <NavigationContainer>
             <NativeBaseProvider>
-                <View style={{ flex: 1 }}>
+
+                {/* <View style={{ flex: 1 }}>
                     <MyNavs />
-                </View>
+                </View> */}
+                <stack.Navigator initialRouteName="ForSign" screenOptions={{ headerShown: false }}>
+                    <Rl.Screen name="ForSign" component={ForSign} />
+                    <Rl.Screen name="MyNavs" component={MyNavs} />
+                </stack.Navigator>
             </NativeBaseProvider>
         </NavigationContainer>
 

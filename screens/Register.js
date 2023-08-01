@@ -4,15 +4,17 @@ import { Text, View, Stack, Input, Icon, Pressable, Heading}  from  'native-base
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from './colores';
 import { signUp } from '../assets/Api/pocketBase';
+import { useNavigation } from '@react-navigation/native'
 
 const RegisterPage = () => {
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState(null)
   const [passwordConfirm, setPasswordConfirm] = useState(null)
   const [show, setShow] = useState(false);
+  const navigate = useNavigation()
   
   const handleSubmit = async () =>{
-    await signUp(user, password)
+    await signUp(user, password, passwordConfirm)
   }
 
 
@@ -44,7 +46,7 @@ const RegisterPage = () => {
     }} type={show ? "text" : "password"} InputRightElement={<Pressable onPress={() => setShow(!show)}>
             <Icon as={<Ionicons name="eye-off" size={24} color="black" />} size={5} mr="2" color="muted.400" />
           </Pressable>} placeholder="Confirma contraseña" onChangeText={(e)=>{setPasswordConfirm(e)}}/>
-         <TouchableOpacity style={styles.btnIngresar}>
+         <TouchableOpacity style={styles.btnIngresar} onPress={handleSubmit}>
          <Text color={colors.lead}>
               Registrarse
             </Text>
