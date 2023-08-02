@@ -21,6 +21,9 @@ const HomeScreen = () => {
 
 
   useEffect(() => {
+
+
+    
     getPosts().then((res) => {
       setPost(res)
 

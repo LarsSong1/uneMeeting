@@ -18,6 +18,8 @@ const Conference = () => {
   const [collectionImages, setCollectionImage] = useState([])
   const [postId, setPostId] = useState([])
   const [postArea, setPostArea] = useState([])
+  const [filterPost, setFilterPost] = useState([])  
+  const [searchText, setSearchText] = useState('')
   
   useEffect(() => {
     getPosts().then((res) => {
@@ -34,7 +36,17 @@ const Conference = () => {
   }, []);
 
 
+  const returnSearch = (text) =>{
+    setSearchText(text)
+    const filter = post.filter((item)=>{
+      return item.title.toLowerCase().includes(text.toLowerCase())
+    });
 
+    setFilterPost(filter)
+  }
+
+
+  console.log(post)
   const conferenceScroll = ({ item, index } ) => {
     const idPost = postId[index]
 
@@ -59,15 +71,16 @@ const Conference = () => {
 
   return (
     <View style={styles.contenedor}>
-      <InputSearch />
+      <InputSearch handle={returnSearch} />
       <Text bold fontSize={30} mt={5}> Conferencias </Text>
       <View mt={5}>
         <Filtros />
       </View>
       <View mt={5} flex={1}>
         <FlatList
-          data={post}
+          data={filterPost}
           renderItem={conferenceScroll}
+          keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         />
 

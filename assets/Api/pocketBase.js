@@ -4,6 +4,7 @@ export const client = new PocketBase(url)
 client.autoCancellation(false);
 
 
+
 export const isUser = client.authStore.isValid;
 
 export async function getPosts() {
