@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from './colores';
 import { login } from '../assets/Api/pocketBase';
 import { useNavigation } from '@react-navigation/native';
+ 
 
 
 const LoginPage = () => {
@@ -13,7 +14,7 @@ const LoginPage = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigation()
 
-
+   
   
 
 

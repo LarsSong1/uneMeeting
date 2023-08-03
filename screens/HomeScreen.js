@@ -4,8 +4,9 @@ import { Text, View, Heading, Image } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import Filtros from '../components/filtros';
 import { useNavigation } from '@react-navigation/native';
-import { client, getPosts } from '../assets/Api/pocketBase';
+import { client, getPosts,  isUser } from '../assets/Api/pocketBase';
 import { colors } from './colores';
+import ConferenceButton from '../components/conferenceButtton';
 
 
 const HomeScreen = () => {
@@ -17,7 +18,7 @@ const HomeScreen = () => {
   const [collectionImages, setCollectionImage] = useState([])
   const [postId, setPostId] = useState([])
   const [postArea, setPostArea] = useState([])
-
+ 
 
 
   useEffect(() => {
@@ -44,22 +45,13 @@ const HomeScreen = () => {
 
 
 
-
+console.log(post)
 
 
   const conferenceScroll = ({ item, index }) => {
-
-    const imageLink = `https://une-meeting.pockethost.io/api/files/${collectionId[index]}/${postId[index]}/${collectionImages[index]}`
+    const idPost = postId[index]
     return (
-      <TouchableOpacity key={item.id} style={styles.botonConferenciasActivas}>
-        <ImageBackground source={require('../assets/img/conferenceImg.jpg')} resizeMode='cover' style={styles.imagenConferenciasActivas}>
-
-          <View flexShrink={1}>
-            <Heading pl={2} pb={2} color={colors.lead} size='sm' ellipsizeMode='tail' pr={5}>{item.user}</Heading>
-          </View>
-          <Text pr={2} pb={2} color={colors.lead} fontSize={10}>{item.area}</Text>
-        </ImageBackground>
-      </TouchableOpacity>
+      <ConferenceButton item={item} index={index} idPost={idPost}/>
     )
   }
 

@@ -5,6 +5,8 @@ client.autoCancellation(false);
 
 
 
+
+
 export const isUser = client.authStore.isValid;
 
 export async function getPosts() {

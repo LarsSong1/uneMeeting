@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import Filtros from '../components/filtros'
 import { colors } from './colores'
 import { Ionicons } from '@expo/vector-icons';
-import { getPosts } from '../assets/Api/pocketBase'
+import { getPosts, client } from '../assets/Api/pocketBase'
+import ConferenceButton from '../components/conferenceButtton'
 
 
 
@@ -23,6 +24,8 @@ const Conference = () => {
 
   const [filterArea, setFilterArea] = useState([])
   const [searchArea, setSearchArea] = useState([])
+  const [username, setUsername] = useState('');
+
 
 
   useEffect(() => {
@@ -53,6 +56,9 @@ const Conference = () => {
   }
 
 
+
+
+
   const returnSearchArea = (text) => {
     setSearchArea(text)
     const filter = post.filter((item) => {
@@ -69,20 +75,41 @@ const Conference = () => {
 
 
 
+
+
+
+
   const conferenceScroll = ({ item, index }) => {
     const idPost = postId[index]
+    const userId = item.user; // Aquí está el RELATION_RECORD_ID del usuario que creó el post
+    
+
+
+    const fetchUserName = async () => {
+      try {
+        // Obtenemos el registro relacionado del usuario usando el ID del usuario
+        const record = await client.collection('users').getOne(userId, {
+          expand: 'relField1,relField2.subRelField', // Ajusta si es necesario
+        });
+
+        // Supongamos que el objeto record tiene una propiedad 'name' que almacena el nombre de usuario completo
+        const userFullName = record.username; // Ajusta 'name' según el campo que almacena el nombre de usuario completo
+
+        // Actualizamos el estado con el nombre de usuario
+        setUsername(userFullName);
+        console.log(record, '-------------------------------------', record.username)
+      } catch (error) {
+        console.error('Error al obtener el nombre de usuario:', error);
+      }
+    };
+
+
+    fetchUserName()
+
 
     return (
       <View flexDirection={'row'} mb={3}>
-        <TouchableOpacity style={styles.botonConferencia} onPress={() => navigate.navigate('conferenceID', { id: idPost })}>
-          <ImageBackground style={styles.imagenConferencias} resizeMode='cover' source={require('../assets/img/conferenceImg.jpg')} borderRadius={5}>
-            <View flexShrink={1}>
-              <Heading pb={2} pl={2} color={colors.lead} size={'sm'} ellipsizeMode='tail' numberOfLines={1}>{item.user}</Heading>
-            </View>
-            <Text pb={2} pr={2} color={colors.lead} fontSize={10}>{item.area}</Text>
-          </ImageBackground>
-
-        </TouchableOpacity>
+        <ConferenceButton item={item} index={index} idPost={idPost} />
         <View pl={5} width={'95%'} flex={1} justifyContent={'flex-start'} alignItems={'flex-start'} mr={2}>
           <Heading size={'md'}>{item.title}</Heading>
           <Text ellipsizeMode='tail' numberOfLines={4} textAlign={'justify'}>{item.description}</Text>
@@ -146,6 +173,7 @@ const styles = StyleSheet.create({
   botonConferencia: {
     width: 190,
     height: 130,
+    marginRight: 10
 
   },
 
