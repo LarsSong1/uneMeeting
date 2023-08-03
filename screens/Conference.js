@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity, ImageBackground, FlatList } from 'react-native'
-import React, { useState, useEffect }from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, Button, Box, View, Heading, Flex } from 'native-base'
 import InputSearch from '../components/inputSearch'
 import { useNavigation } from '@react-navigation/native'
@@ -18,9 +18,13 @@ const Conference = () => {
   const [collectionImages, setCollectionImage] = useState([])
   const [postId, setPostId] = useState([])
   const [postArea, setPostArea] = useState([])
-  const [filterPost, setFilterPost] = useState([])  
+  const [filterPost, setFilterPost] = useState([])
   const [searchText, setSearchText] = useState('')
-  
+
+  const [filterArea, setFilterArea] = useState([])
+  const [searchArea, setSearchArea] = useState([])
+
+
   useEffect(() => {
     getPosts().then((res) => {
       setPost(res)
@@ -32,13 +36,16 @@ const Conference = () => {
       setPostId(id)
       const areaName = res.map(item => item.area)
       setPostArea(areaName)
+
+      setFilterArea(res)
+      setFilterPost(res)
     })
   }, []);
 
 
-  const returnSearch = (text) =>{
+  const returnSearch = (text) => {
     setSearchText(text)
-    const filter = post.filter((item)=>{
+    const filter = post.filter((item) => {
       return item.title.toLowerCase().includes(text.toLowerCase())
     });
 
@@ -46,39 +53,62 @@ const Conference = () => {
   }
 
 
-  console.log(post)
-  const conferenceScroll = ({ item, index } ) => {
+  const returnSearchArea = (text) => {
+    setSearchArea(text)
+    const filter = post.filter((item) => {
+      return item.area.toLowerCase().includes(text.toLowerCase())
+
+    });
+    setFilterArea(filter)
+  }
+
+
+  const EliminarFiltros = () => {
+    setFilterArea([]);
+  };
+
+
+
+  const conferenceScroll = ({ item, index }) => {
     const idPost = postId[index]
 
     return (
       <View flexDirection={'row'} mb={3}>
-          <TouchableOpacity style={styles.botonConferencia} onPress={()=> navigate.navigate('conferenceID', {id: idPost})}>
-            <ImageBackground style={styles.imagenConferencias} resizeMode='cover' source={require('../assets/img/conferenceImg.jpg')} borderRadius={5}>
-              <Heading pb={2} pl={2} color={colors.lead} size={'sm'}>{item.user}</Heading>
-              <Text pb={2} pr={2} color={colors.lead}>{item.area}</Text>
-            </ImageBackground>
+        <TouchableOpacity style={styles.botonConferencia} onPress={() => navigate.navigate('conferenceID', { id: idPost })}>
+          <ImageBackground style={styles.imagenConferencias} resizeMode='cover' source={require('../assets/img/conferenceImg.jpg')} borderRadius={5}>
+            <View flexShrink={1}>
+              <Heading pb={2} pl={2} color={colors.lead} size={'sm'} ellipsizeMode='tail' numberOfLines={1}>{item.user}</Heading>
+            </View>
+            <Text pb={2} pr={2} color={colors.lead} fontSize={10}>{item.area}</Text>
+          </ImageBackground>
 
-          </TouchableOpacity>
-          <View pl={5} width={'95%'} flex={1} justifyContent={'flex-start'} alignItems={'flex-start'} mr={2}>
-            <Heading  size={'md'}>{item.title}</Heading>
-            <Text ellipsizeMode='tail' numberOfLines={4} textAlign={'justify'}>{item.description}</Text>
-          </View>
+        </TouchableOpacity>
+        <View pl={5} width={'95%'} flex={1} justifyContent={'flex-start'} alignItems={'flex-start'} mr={2}>
+          <Heading size={'md'}>{item.title}</Heading>
+          <Text ellipsizeMode='tail' numberOfLines={4} textAlign={'justify'}>{item.description}</Text>
         </View>
+      </View>
     )
   }
 
- 
+
 
   return (
     <View style={styles.contenedor}>
       <InputSearch handle={returnSearch} />
-      <Text bold fontSize={30} mt={5}> Conferencias </Text>
+      <View flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+        <Text bold fontSize={30} mt={5}>Conferencias</Text>
+        <Button onPress={EliminarFiltros} backgroundColor={colors.yellow}
+          mt={6} mr={5}
+        >Eliminar filtros</Button>
+      </View>
+
       <View mt={5}>
-        <Filtros />
+        <Filtros filter={returnSearchArea} filterArea={filterArea} />
       </View>
       <View mt={5} flex={1}>
         <FlatList
-          data={filterPost}
+          data={filterArea.length > 0 ? filterArea : filterPost}
           renderItem={conferenceScroll}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
@@ -87,7 +117,7 @@ const Conference = () => {
       </View>
 
       <Box alignItems="center" position={'absolute'} bottom={5} right={5}>
-        <Button onPress={() => navigate.navigate('addConference')} style={{backgroundColor: colors.yellow}} borderRadius={150} height={70} width={70}>
+        <Button onPress={() => navigate.navigate('addConference')} style={{ backgroundColor: colors.yellow }} borderRadius={150} height={70} width={70}>
           <Ionicons name="add-outline" size={40} color={colors.lead} />
         </Button>
       </Box>
@@ -111,12 +141,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     borderRadius: 10,
     borderWidth: 3,
-    
+
   },
   botonConferencia: {
     width: 190,
     height: 130,
-  
+
   },
 
   listaConferencias: {

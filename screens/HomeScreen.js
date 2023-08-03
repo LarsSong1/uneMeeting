@@ -17,13 +17,13 @@ const HomeScreen = () => {
   const [collectionImages, setCollectionImage] = useState([])
   const [postId, setPostId] = useState([])
   const [postArea, setPostArea] = useState([])
-  
+
 
 
   useEffect(() => {
 
 
-    
+
     getPosts().then((res) => {
       setPost(res)
 
@@ -36,32 +36,29 @@ const HomeScreen = () => {
       const id = res.map(item => item.id);
       setPostId(id)
 
-      const unsubscribe = client.collection('posts').subscribe('*', function (e) {
-        console.log('Cambios en el registro:', e.record);
-
-      });
-
       const areaName = res.map(item => item.area)
       setPostArea(areaName)
     })
 
   }, []);
 
-  
 
-  
-    
 
-  const conferenceScroll = ({ item, index } ) => {
+
+
+
+  const conferenceScroll = ({ item, index }) => {
 
     const imageLink = `https://une-meeting.pockethost.io/api/files/${collectionId[index]}/${postId[index]}/${collectionImages[index]}`
     return (
       <TouchableOpacity key={item.id} style={styles.botonConferenciasActivas}>
-          <ImageBackground source={require('../assets/img/conferenceImg.jpg')} resizeMode='cover' style={styles.imagenConferenciasActivas}>
+        <ImageBackground source={require('../assets/img/conferenceImg.jpg')} resizeMode='cover' style={styles.imagenConferenciasActivas}>
 
-            <Heading pl={2} pb={2} color={colors.lead} size='sm'>{item.user}</Heading>
-            <Text pr={2} pb={2} color={colors.lead} fontSize={10}>{item.area}</Text>
-          </ImageBackground>
+          <View flexShrink={1}>
+            <Heading pl={2} pb={2} color={colors.lead} size='sm' ellipsizeMode='tail' pr={5}>{item.user}</Heading>
+          </View>
+          <Text pr={2} pb={2} color={colors.lead} fontSize={10}>{item.area}</Text>
+        </ImageBackground>
       </TouchableOpacity>
     )
   }
@@ -88,7 +85,6 @@ const HomeScreen = () => {
 
       </View>
       <View flexDirection={'row'} mt={5}>
-        <Filtros />
       </View>
       <View mt={5}>
         <Heading size={'md'} bold>Recomendaciones</Heading>

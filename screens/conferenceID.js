@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, TouchableOpacity, Linking } from 'react-native'
+import { StyleSheet, ImageBackground, TouchableOpacity, Linking, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, Heading, Box, Pressable, Stack, Button, Icon } from 'native-base'
 import { colors } from './colores'
@@ -44,7 +44,12 @@ const ConferenceID = () => {
         getOneResult();
     }, [route.params.id]);
     if (loading) {
-        return <Text>Cargando</Text>;
+        return (
+            <View flex={1} justifyContent={'center'} alignItems={'center'}>
+                <Image source={require('../assets/img/unemeeting.png')} resizeMode='contain' />
+                <Text>Cargando</Text>
+            </View>
+        );
     }
 
     console.log(post)

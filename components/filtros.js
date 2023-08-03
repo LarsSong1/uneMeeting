@@ -8,14 +8,14 @@ import { Ionicons } from '@expo/vector-icons';
 const CATEGORIAS = [
     { nombre: 'Economía', icono: "book" },
     { nombre: 'Ofimática', icono: 'desktop' },
-    { nombre: 'Ciencia de Datos', icono: 'flask' },
+    { nombre: 'Ciencias Naturales', icono: 'flask' },
     { nombre: 'Gestion de Proyectos', icono: "book" }
 ]
 
-const Filtros = () => {
+const Filtros = ({filter, filterArea}) => {
     const categoryIcons = ({ item, index }) => {
         return (
-            <TouchableOpacity style={styles.boton}>
+            <TouchableOpacity style={styles.boton} onPress={()=> filter(item.nombre)}>
                 <Icon as={Ionicons} name={item.icono} size={4} color={'#f1f1e6'} mr={2} />
                 <Text bold color={'#f1f1e6'} fontSize={'lg'}>{item.nombre}</Text>
             </TouchableOpacity>

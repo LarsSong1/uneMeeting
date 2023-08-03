@@ -30,7 +30,7 @@ const LoginPage = () => {
   return (
     <View style={styles.contenedor}>
       <View justifyContent={'center'} alignItems={'center'}>
-        <Image source={require('../assets/icon.png')} resizeMode='cover'
+        <Image source={require('../assets/img/unemeeting.png')} resizeMode='cover'
           style={styles.logo}
         />
         <Heading size={'md'} mb={5} bold>
