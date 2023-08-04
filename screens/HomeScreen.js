@@ -4,9 +4,11 @@ import { Text, View, Heading, Image } from 'native-base'
 import { Ionicons } from '@expo/vector-icons';
 import Filtros from '../components/filtros';
 import { useNavigation } from '@react-navigation/native';
-import { client, getPosts,  isUser } from '../assets/Api/pocketBase';
+import { client, getPosts, getUserName, isUser } from '../assets/Api/pocketBase';
 import { colors } from './colores';
 import ConferenceButton from '../components/conferenceButtton';
+
+
 
 
 const HomeScreen = () => {
@@ -18,7 +20,9 @@ const HomeScreen = () => {
   const [collectionImages, setCollectionImage] = useState([])
   const [postId, setPostId] = useState([])
   const [postArea, setPostArea] = useState([])
- 
+  const [username, setUserName] = useState([])
+  const [date, setDate] = useState([])
+
 
 
   useEffect(() => {
@@ -39,32 +43,52 @@ const HomeScreen = () => {
 
       const areaName = res.map(item => item.area)
       setPostArea(areaName)
+
+      const userId = res[0].user;
+      getUserName(userId).then((user) => {
+        setUserName(user);
+
+
+
+      });
+
     })
+
+
+
 
   }, []);
 
 
 
-console.log(post)
 
 
   const conferenceScroll = ({ item, index }) => {
     const idPost = postId[index]
     return (
-      <ConferenceButton item={item} index={index} idPost={idPost}/>
+      <ConferenceButton item={item} index={index} idPost={idPost} />
     )
   }
 
+  const fecha = new Date()
+  const meses = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+  console.log(fecha)
+  const dia = fecha.getDate().toString().padStart(2, '0');
+  const mes = meses[fecha.getMonth()]
+  const anio = fecha.getFullYear();
+  const datefield = `${dia} de ${mes} ${anio}`
 
 
-
-
+  
   return (
     <View style={styles.contenedor} position={'relative'}>
       <View flexDirection={'row'} justifyContent={'space-between'} pr={'5%'} mt={5}>
         <View flex={1}>
-          <Heading size='lg' fontWeight={'extrabold'}>Hola Alejandro</Heading>
-          <Text fontWeight={'normal'}>2 Julio 2023</Text>
+          <Heading size='lg' fontWeight={'extrabold'}>Hola </Heading>
+          <Text fontWeight={'normal'}>{datefield}</Text>
         </View>
         <View flexDirection={'row'} alignItems={'center'}>
           <TouchableOpacity onPress={() => navigate.navigate('settings')}>
@@ -79,11 +103,11 @@ console.log(post)
       <View flexDirection={'row'} mt={5}>
       </View>
       <View mt={5}>
-        <Heading size={'md'} bold>Recomendaciones</Heading>
+        <Heading size={'md'} bold>Conferencias</Heading>
         <TouchableOpacity style={styles.botonRecomendaciones}>
           <ImageBackground resizeMode={'cover'} source={require('../assets/img/conferenceImg.jpg')} style={styles.imgRecomendaciones}>
-            <Heading pl={2} color={colors.lead} fontWeight={'bold'} size={'sm'}>Sopita Alejandro</Heading>
-            <Text pl={2} mb={2} color={colors.lead}>Tics y su impacto en la sociedad</Text>
+            <Heading pl={2} color={colors.lead} fontWeight={'bold'} size={'sm'}>Visualiza todas las conferencias</Heading>
+            <Text pl={2} mb={2} color={colors.lead}>Puedes Scrollear hacia la derecha</Text>
           </ImageBackground>
         </TouchableOpacity>
       </View>

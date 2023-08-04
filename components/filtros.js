@@ -9,7 +9,11 @@ const CATEGORIAS = [
     { nombre: 'Economía', icono: "book" },
     { nombre: 'Ofimática', icono: 'desktop' },
     { nombre: 'Ciencias Naturales', icono: 'flask' },
-    { nombre: 'Gestion de Proyectos', icono: "book" }
+    { nombre: 'Gestion de Proyectos', icono: "book" },
+    { nombre: 'Programación', icono: "code-slash"},
+    { nombre: 'Derecho', icono: "ios-book"},
+    { nombre: 'Emprendimiento', icono: "bar-chart-sharp"},
+    { nombre: 'Lenguaje', icono: "mic-sharp"}
 ]
 
 const Filtros = ({filter, filterArea}) => {

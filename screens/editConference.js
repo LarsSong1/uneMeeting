@@ -26,6 +26,21 @@ const EditConference = () => {
 
 
   const handleConferenceForm = async () => {
+    if (!tittle){
+      return alert('Debes ingresar un titulo')
+    }
+
+    if (!description){
+      return alert('Debes ingresar una desccripción')
+    }
+
+    if (!area){
+      return alert('debes ingresar un area')
+    }
+
+    if (!link){
+      return alert('debes ingresar una url')
+    }
     await updatePost(idPost, tittle, description, area, link)
     navigate.goBack()
 

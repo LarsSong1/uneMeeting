@@ -5,7 +5,12 @@ client.autoCancellation(false);
 
 
 
-
+export async function getUserName(idrecord){
+    const record = await client.collections('users').getOne(idrecord,{
+        expand:'relField1,relField2.subRelField'
+    })
+    return record
+}
 
 export const isUser = client.authStore.isValid;
 
@@ -85,7 +90,7 @@ export async function signUp(username, password, passwordConfirm){
         await client.collection('users').create(formData)
         alert('se he creado un usuario')
     }catch (error) {    
-        console.log(error)
+        console.log('Error al crear usuario', error)
     }
    
 }

@@ -83,7 +83,7 @@ function MyNavs() {
    
         return (
             <Tab.Navigator
-                initialRouteName='Inicio'
+                initialRouteName='Buscar'
                 screenOptions={{
                     tabBarActiveTintColor: '#a8c5ddc',
                     tabBarStyle: {

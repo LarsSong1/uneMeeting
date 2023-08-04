@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     botonConferencia: {
         width: 190,
         height: 130,
+        marginRight: 10
         
 
     },

@@ -20,7 +20,7 @@ const LoginPage = () => {
 
   const handleSubmit = async () => {
     await login(user, password)
-    navigate.navigate('MyNavs', {screen: 'Home'});
+    navigate.navigate('MyNavs', {screen: 'Buscar'});
   }
 
 
