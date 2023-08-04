@@ -13,12 +13,17 @@ export async function getPosts() {
     return await client.collection("posts").getFullList();
 }
 
-export async function createPost(title, description, area) {
+export async function createPost(title, description, area, link) {
     try {
+
+        if (!client.authStore.model || !client.authStore.model.id) {
+            throw new Error("User ID is missing. Please make sure the user is logged in.");
+        }
         const formData = new FormData();
         formData.append("title", title);
         formData.append("description", description);
-        formData.append("area", area);
+        formData.append("area", area)
+        formData.append('url', link)
         formData.append("user", client.authStore.model.id)
         await client.collection('posts').create(formData);
         alert('Post created correctly')
@@ -40,12 +45,13 @@ export async function deletePost(id) {
 
 }
 
-export async function updatePost(id, title, description, area) {
+export async function updatePost(id, title, description, area, link) {
     try {
         const formData = new FormData()
         formData.append("title", title)
         formData.append("description", description)
         formData.append("area", area)
+        formData.append("url", link)
         formData.append("user", client.authStore.model.id)
         await client.collection('posts').update(id, formData)
         
@@ -61,6 +67,7 @@ export async function updatePost(id, title, description, area) {
 export async function login(username, password) {
     const data = await client.collection('users').authWithPassword(username, password)
     console.log(data)
+
 
 }
 

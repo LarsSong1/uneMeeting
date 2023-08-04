@@ -15,16 +15,18 @@ const EditConference = () => {
   const [tittle, setTittle] = useState('')
   const [description, setDescription] = useState('')
   const [area, setArea] = useState('')
+  const [link, setLink] = useState('')
   const idPost = route.params.id
   const idTitle = route.params.title
   const idDescription = route.params.description
   const idArea = route.params.description
+  const url = route.params.url
 
   const navigate = useNavigation()
 
 
   const handleConferenceForm = async () => {
-    await updatePost(idPost, tittle, description, area)
+    await updatePost(idPost, tittle, description, area, link)
     navigate.goBack()
 
   }
@@ -54,6 +56,19 @@ const EditConference = () => {
             <Stack mx="4">
               <FormControl.Label>Descripción</FormControl.Label>
               <Input type="text" value={description} placeholder='Descripción' onChangeText={(e) => { setDescription(e) }} />
+              <FormControl.HelperText>
+                Deben ser al menos 5 caracteres
+              </FormControl.HelperText>
+              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size={10} color="black" />}>
+                Solo se admiten * cacteres como máximo
+              </FormControl.ErrorMessage>
+            </Stack>
+          </FormControl>
+          {/* url */}
+          <FormControl isRequired>
+            <Stack mx="4">
+              <FormControl.Label>Url</FormControl.Label>
+              <Input type="text" value={link} placeholder='Ingresa link de conferencia' onChangeText={(linkvalue) => {setLink(linkvalue)}} />
               <FormControl.HelperText>
                 Deben ser al menos 5 caracteres
               </FormControl.HelperText>

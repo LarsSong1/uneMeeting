@@ -80,7 +80,8 @@ const ConferenceID = () => {
                                         id: route.params.id,
                                         title: post.title,
                                         description: post.description,
-                                        area: post.area
+                                        area: post.area,
+                                        url: post.url
                                     });
                             }
                         }>
@@ -101,7 +102,7 @@ const ConferenceID = () => {
                                     Para acceder a la reunión debes darle click al siguiente botón
                                 </Text>
 
-                                <TouchableOpacity style={styles.btnIr} onPress={()=>{Linking.openURL('https://www.youtube.com/')}}>
+                                <TouchableOpacity style={styles.btnIr} onPress={()=>{Linking.openURL(`${post.url}`)}}>
                                     <Text textAlign='center' color={colors.lead} bold>ir</Text>
                                 </TouchableOpacity>
 

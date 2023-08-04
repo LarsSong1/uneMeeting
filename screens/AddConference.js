@@ -13,14 +13,17 @@ const AddConference = () => {
   const [tittle, setTittle] = useState('')
   const [description, setDescription] = useState('')
   const [area, setArea] = useState('')
+  const [link, setLink] = useState('')
   const navigate = useNavigation()
 
 
   const uploadForm = async () => {
-    createPost(tittle, description, area)
+    createPost(tittle, description, area, link)
     navigate.goBack()
   };
 
+
+  
 
   return (
     <View style={styles.contenedor}>
@@ -53,17 +56,29 @@ const AddConference = () => {
               </FormControl.ErrorMessage>
             </Stack>
           </FormControl>
+          {/* url */}
+          <FormControl isRequired>
+            <Stack mx="4">
+              <FormControl.Label>Url</FormControl.Label>
+              <Input type="text" value={link} placeholder='Ingresa link de conferencia' onChangeText={(linkvalue) => {setLink(linkvalue)}} />
+              <FormControl.HelperText>
+                Deben ser al menos 5 caracteres
+              </FormControl.HelperText>
+              <FormControl.ErrorMessage leftIcon={<Ionicons name="warning" size={10} color="black" />}>
+                Solo se admiten * cacteres como máximo
+              </FormControl.ErrorMessage>
+            </Stack>
+          </FormControl>
           {/* area */}
           <FormControl isRequired>
             <Stack mx='4'>
               <View backgroundColor={colors.lead} mb={3} mt={3}>
                 <Text >Escoge una Categoría</Text>
-                <Picker style={styles.picker} onValueChange={(categoria) => { setArea(categoria) }} selectedValue={area}>
+                <Picker style={styles.picker} onValueChange={(categoria) => { setArea(categoria)}} selectedValue={area}>
                   <Picker.Item label="Economía" value="Economía" />
                   <Picker.Item label="Ofimática" value="Ofimática" />
                   <Picker.Item label="Ciencias Naturales" value="Ciencias Naturales" />
                 </Picker>
-
               </View>
             </Stack>
           </FormControl>

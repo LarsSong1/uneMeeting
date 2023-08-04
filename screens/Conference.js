@@ -80,31 +80,23 @@ const Conference = () => {
 
 
   const conferenceScroll = ({ item, index }) => {
-    const idPost = postId[index]
-    const userId = item.user; // Aquí está el RELATION_RECORD_ID del usuario que creó el post
-    
+    // try {
+      const idPost = postId[index]
+      const userId = item.user; // Aquí está el RELATION_RECORD_ID del usuario que creó el post
+
+    //   const record = await client.collection('users').getOne(userId, {
+    //     expand: 'relField1,relField2.subRelField', // Ajusta si es necesario
+    //   });
+    //   console.log(record,  ' -------------- ', record.name)
+
+    // } catch (error) {
+    //   console.error('Error al obtener el nombre de usuario:', error);
 
 
-    const fetchUserName = async () => {
-      try {
-        // Obtenemos el registro relacionado del usuario usando el ID del usuario
-        const record = await client.collection('users').getOne(userId, {
-          expand: 'relField1,relField2.subRelField', // Ajusta si es necesario
-        });
-
-        // Supongamos que el objeto record tiene una propiedad 'name' que almacena el nombre de usuario completo
-        const userFullName = record.username; // Ajusta 'name' según el campo que almacena el nombre de usuario completo
-
-        // Actualizamos el estado con el nombre de usuario
-        setUsername(userFullName);
-        console.log(record, '-------------------------------------', record.username)
-      } catch (error) {
-        console.error('Error al obtener el nombre de usuario:', error);
-      }
-    };
+    // };
 
 
-    fetchUserName()
+  
 
 
     return (
