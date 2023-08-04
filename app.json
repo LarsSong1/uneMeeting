@@ -7,11 +7,9 @@
     "icon": "./assets/img/unemeeting.png",
     "userInterfaceStyle": "light",
     "splash": {
-      
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-  
     },
     "assetBundlePatterns": [
       "**/*"
@@ -23,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/img/unemeeting.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.larsong.unemeeting"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "93672d60-3ba4-45dd-89a9-19464aaec231"
+      }
     }
   }
 }
